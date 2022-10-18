@@ -30,12 +30,12 @@ const actualizarEvento = async (req, res = response) => {
   try {
     const evento = await Evento.findById(eventoId);
     if (!evento) {
-      res
+      return res
         .status(404)
         .json({ ok: false, message: "Evento no encontrado con ese ID" });
     }
     if (evento.user.toString() !== uid) {
-      return res.status(404).json({
+      return res.status(401).json({
         ok: false,
         message: "No está autorizado para editar este evento",
       });
@@ -54,7 +54,7 @@ const actualizarEvento = async (req, res = response) => {
   } catch (error) {
     console.error(error);
     return res
-      .status(404)
+      .status(500)
       .json({ ok: false, msg: "Comunicarse con el administrador" });
   }
 
